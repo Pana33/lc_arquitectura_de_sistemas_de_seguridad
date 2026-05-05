@@ -79,26 +79,22 @@ jobs:
       - name: Ejecutar análisis SAST
         run: |
           semgrep --config p/python \
-          --config p/owasp-top-ten \
-          --config p/secrets \
-          --config p/sql-injection \
-          
-          --error \
-          --json \
-          --output=semgrep-results.json \
-          
-          Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/ ||
-          true
+                  --config p/owasp-top-ten \
+                  --config p/secrets \
+                  --config p/sql-injection \
+                  --error \
+                  --json \
+                  --output=semgrep-results.json \
+                  Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/ || true
           semgrep --config p/python \
-          --config p/owasp-top-ten \
-          --config p/secrets \
-          --config p/sql-injection \
-          
-          Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/
-          - name: Guardar resultados SAST
-          uses: actions/upload-artifact@v4
-          if: always()
-          with:
+                  --config p/owasp-top-ten \
+                  --config p/secrets \
+                  --config p/sql-injection \
+                  Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/
+      - name: Guardar resultados SAST
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
           name: semgrep-results
           path: semgrep-results.json
 
@@ -139,23 +135,16 @@ jobs:
       - name: Instalar y ejecutar pip-audit
         run: |
           pip install pip-audit
-          
-          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-
-          lab/app/requirements.txt \
-          
-          --format=json \
-          
-          --output=audit-report.json || true
-          
+          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt \
+                    --format=json \
+                    --output=audit-report.json || true
           echo '--- Reporte de CVEs ---'
+          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt
           
-          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-
-          lab/app/requirements.txt
-          
-          - name: Guardar reporte de auditoria
-          uses: actions/upload-artifact@v4
-          if: always()
-          with:
+      - name: Guardar reporte de auditoria
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
           name: pip-audit-report
           path: audit-report.json
 
@@ -199,10 +188,7 @@ jobs:
       # Pregunta: ¿qué pasa si un test falla? ¿Se bloquea el merge del PR?
       - name: Instalar dependencias
         run: |
-
-          pip install -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-
-          lab/app/requirements.txt
-          
+          pip install -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt
           pip install pytest
 
       - name: Ejecutar tests
@@ -215,8 +201,8 @@ jobs:
     needs: [sast, sca, tests]
     if: always()
     steps:
-    - name: Resumen
-      run: |
-        echo 'SAST: ${{ needs.sast.result }}'
-        echo 'Dependencias: ${{ needs.sca.result }}'
-        echo 'Tests: ${{ needs.tests.result }}'
+      - name: Resumen
+        run: |
+          echo 'SAST: ${{ needs.sast.result }}'
+          echo 'Dependencias: ${{ needs.sca.result }}'
+          echo 'Tests: ${{ needs.tests.result }}'
