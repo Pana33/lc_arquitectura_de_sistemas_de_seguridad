@@ -25,7 +25,7 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:   # ejecución manual desde la pestaña Actions
-
+ 
 # ─── TRABAJOS (JOBS) ─────────────────────────────────────────────────────────
 # Cada job es una etapa independiente del pipeline.
 # Los jobs corren en paralelo por defecto, salvo que uses "needs:".
